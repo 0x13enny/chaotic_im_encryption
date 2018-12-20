@@ -1,13 +1,4 @@
-# ROtterS
-robotic arm related projects started in 2018 Fall
+# CapybaraProject
+
 
 ## Description
-Primary goal is to control a robotic arm helping physiotherapy.
-
-## ROS distribution & Linux distribution
-
-
-## Environment setup
-
-## Schedule
-
