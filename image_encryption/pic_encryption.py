@@ -50,11 +50,12 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     length = len(image_array)*len(image_array[0])*len(image_array[0][0])
     # efficiency warning
     key_chaos = chaotic_map(length,params[0],params[1])
-    print(key_chaos)
+    # print(key_chaos)
     key_lfsr = LFSR(params[2], length)
-    print(key_lfsr)
+    # print(key_lfsr)
     key = XOR(key_chaos,key_lfsr)
-    print(key)
+    # print(key)
+    print(image_array)
     image_array = image_array.tolist()
     for h in image_array:
         row_element=[]
@@ -73,38 +74,20 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
 def decription():
     pass
 
-
-
-def loadAndWrite(file):
-    I = Image.open(file)
-    I = np.asarray(I)
-    print(I,"\n")
-    new = Image.fromarray(I,"RGB")
-    new.save('tmp.jpg',"JPEG")
-    J = Image.open("tmp.jpg")
-    print(np.asarray(J))
-    
-    new = Image.frombytes("RGB",(2,2),I)
-    new.save('tmp2.jpg',"JPEG")
-    K = Image.open("tmp2.jpg")
-    print(np.array(K))
-    
-
 if __name__=="__main__":
     params=[4, 0.5111, 25]
     
-    # en_image_array, key = encryption(loadimage("test.jpg"),params)
-    # de_image_array, key = encryption(en_image_array,params)
+    en_image_array, key = encryption(loadimage("image/test.jpg"),params)
+    de_image_array, key = encryption(en_image_array,params)
 
-    # print("original\n",loadimage("test.jpg"))
-    # print("encoded\n",en_image_array)y
-    # print("decoded\n",de_image_array)
 
-    loadAndWrite('test.jpg')
-
+    # print("en",en_image_array)
+    # print("de",de_image_array)
 
     # P = Image.new('RGB',(512,256))
-    # newImg1 = Image.fromarray(en_image_array,"RGB")
-    # newImg1.save("encoded.jpg")
-    # newImg2 = Image.fromarray(de_image_array,"RGB")
-    # newImg2.save("decoded.jpg")
+    newImg1 = Image.fromarray(en_image_array,"RGB")
+    newImg1.save("encoded.png","PNG")
+    # print(np.array(Image.open("encoded.png",'r')))
+    newImg2 = Image.fromarray(de_image_array,"RGB")
+    newImg2.save("decoded.png","PNG")
+    # print(np.array(Image.open("decoded.png",'r')))
