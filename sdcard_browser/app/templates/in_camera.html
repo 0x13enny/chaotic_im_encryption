@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inside {{jumboId}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discord_style.css') }}">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket;
+
+        $(document).ready(function(){
+            var jumboId = '{{jumboId}}';
+            socket = io.connect('http://localhost:5000/{{jumboId}}');
+            socket.on('connect', function() {
+                socket.emit('clientGreet', jumboId);
+            });
+            socket.on("sdFigReady", function (msg) {
+                // var image = document.getElementById("sdcard_hour");
+                // var url='image_generated/'+msg;
+                // image.src= "{{ url_for('static', filename="+url+") }}";
+                document.getElementsByName('keep_csv').innerText="received！！！";
+                console.log("received")
+                socket.emit('pRequest',"hello server");
+            });
+            socket.on("vidFigReady", function (msg) {
+                // var image = document.getElementById("video_info");
+                // var url='image_generated/'+msg;
+                // image.src= "{{ url_for('static', filename="+url+") }}";
+                socket.emit('pRequest',url);
+            });
+            // =======================================
+        });
+    </script>
+</head>
+<body>
+<div id='description'>
+    <h1> Connected to {{jumboId}} </h1>
+</div>
+
+<div id='control_bar'>
+    <div id='static'>
+    <h2>SD Card Status</h2>
+    </div>
+    <div id='data'>
+    <h3>available : {{sd_info[0]}}</h3>
+    <h3>used : {{sd_info[1]}}</h3>
+    <h3>total : {{sd_info[2]}}</h3>
+    </div>
+    <div id='time_info_buttons'>
+        <h2>available dates for thumbnails and gif</h2>
+        <form action="" method="POST">
+            {% for time_info in time_infos%}
+            <button class="button" type='submit' name='dates' value={{time_info}}>{{time_info}}</button>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+<!-- <div id="msg">hi server</div> -->
+
+<div id='display_area'>
+    <div class='plots'>
+        <!-- <img class='image' src="{{ url_for('static', filename='image_generated/20181019(halfHourly).png') }}"> -->
+        <img class='image' id="sdcard_hour" src="{{ url_for('static', filename='image_src/loading.gif') }}">
+        <form action="" method="POST">
+            <button class='download' name='keep_csv'>keep csv file</button>
+            <button class="download" name='keep_plot'>keep plots</button>
+            </form>
+    </div>
+    <div class='plots'>
+        <img class='image' id="sdcard_min" src="{{ url_for('static', filename='image_src/loading.gif') }}">   
+        <!-- <img class='image' src="{{ url_for('static', filename='image_generated/videos_all.png') }}"> -->
+        <form action="" method="POST">
+        <button class='download' name='keep_csv'>keep csv file</button>
+        <button class="download" name='keep_plot'>keep plots</button>
+        </form>
+    </div>
+    <div class='plots'>
+        <img class='image' id="video_info" src="{{ url_for('static', filename='image_src/loading.gif') }}">   
+        <!-- <img class='image' src="{{ url_for('static', filename='image_generated/20181019_03(minutely).png') }}"> -->
+        <form action="" method="POST">
+        <button class='download' name='keep_csv'>keep csv file</button>
+        <button class="download" name='keep_plot'>keep plots</button>
+        </form>
+    
+    <!-- <br><a>Hourly</a><a>half-Hourly</a><a>minutely</a> -->
+    </div>
+</div>
+</body>
+</html>

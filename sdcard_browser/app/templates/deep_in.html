@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discord_style.css') }}" />
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8" >
+        var socket;
+
+        $(document).ready(function(){
+            socket = io.connect('http://localhost:5000/{{jumboId}}/{{date}}');
+            socket.on('connect', function() {
+                socket.emit('joined', "hi server");
+            });
+            socket.on("greet", function (msg) {
+            document.getElementById("msg").textContent=msg;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id='description'>
+        <h1> {{jumboId}} : {{date}} </h1>
+    </div>
+    <div id='control_bar'>
+
+    </div>
+    <div id="thumbnail_area">
+        {% for filename in filenames %}
+            <div class="figures">
+                <img class='image' src="{{ url_for('static', filename='image_src/loading.gif') }}">
+                <form action="" method="POST">
+                <button class='download' name='keep_thumbnail'>keep thumbnail</button>
+                <button class="download" name='keep_gif'>keep gif</button>
+                </form>
+            </div>
+        {% endfor %}
+
+
+    </div>
+
+</body>
+</html>

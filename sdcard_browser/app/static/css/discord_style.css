@@ -1,0 +1,103 @@
+body{
+    background-color:rgb(44,47,51);
+    font-family: monospace;
+    color: rgb(192,192,192);
+}
+/*  color inventories
+rgb(233,168,32)
+rgb(224,21,99)
+rgb(62,185,145)
+rgb(35,39,42)
+rgb(114,137,218)
+rgb(153,170,181)
+rgb(44,47,51)
+rgb(197,82,63)  */
+
+
+#description{
+    text-align: center;
+}
+#title{
+    text-align: center;
+}
+#jumboId{
+    text-align: center;
+    vertical-align: middle;
+}
+#usage{
+    width: 50% ;
+    text-align: center;
+    margin: auto auto;
+
+}
+
+#error{
+    text-align: center;
+    margin: auto auto;
+    color: red;
+}
+
+#static{
+    display: inline-block;
+    white-space: nowrap;
+    text-align: right;
+    vertical-align: middle;
+}
+#data{
+    display: inline-block;
+    white-space: nowrap;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#control_bar{
+    text-align: center;
+    position:relative;
+    margin: 0px auto; 
+
+}
+
+#control_bar div#time_info_buttons {
+    position:relative;
+    text-align: center;
+    height: 100px;
+    margin: 0px auto; /*Set to middle*/
+}
+
+
+#control_bar div#time_info_buttons .button{
+    position:relative;
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    color: black;
+}
+#display_area{
+    text-align: center;
+    margin: 0px auto; /*Set to middle*/
+}
+
+#display_area .plots{
+    display: inline-block;
+    white-space: nowrap;
+    width: 32%;
+    vertical-align: middle;
+    text-align: center;
+    /* margin: 0px auto;
+    align-items: center; */
+}
+
+#thumbnail_area .figures{
+    display: inline-block;
+    white-space: nowrap;
+    width: 19%;
+    vertical-align: middle;
+    text-align: center;
+    /* margin: 0px auto;
+    align-items: center; */
+}
+.image{
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0px auto; /*Set to middle*/
+
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SD card browser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discord_style.css') }}">
+ 
+</head>
+<body>
+    
+    <div id="discription" style="padding: 100px 0; text-align: center;" >
+        <h1 id="title">SD card browser</h1>
+        <p id="usage">For all the tests involving SD Card Recording, it's inconvenient to check videos profile by download it. This project is to solve the invonvenience. Now it can only work on DomePlus and Bullets</p>
+        <!-- <p id="description"></p> -->
+    </div>
+    
+    <div class="control_bar">
+        <h4 id="title">fill in the jumboId of target camera</h4>
+        <div id="jumboId">                
+                <label for="jumboid">jumboId:</label>
+                <form action="" method="POST" style="display: inline">
+                <input name="camid" type="text"/>
+                <input class='button' name="send" type="submit" value="send" />
+                </form>
+        </div>
+
+        <br><h5 id="error">{{err_msgs}}</label>
+        <!-- <br><a href="/home">AWS browser</a> -->
+    </div>
+    <p></p>    
+</body>
+</html>
