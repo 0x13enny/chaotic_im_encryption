@@ -59,11 +59,12 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     image_array = image_array.tolist()
     key = np.array(key)
     shape = ( len(image_array), len(image_array[0]),len(image_array[0][0]) )
-
     key = key.reshape(shape)
-    for row in range(0,len(image_array)-1):
+    # print(key)
+    # print(image_array)
+    for row in range(0,len(image_array)):
         row_element=[]
-        for pix in range(0,len(image_array[0])-1):
+        for pix in range(0,len(image_array[0])):
 
             pixel_element = XOR(image_array[row][pix],key[row][pix])
             row_element.append(pixel_element)
@@ -79,10 +80,11 @@ def test():
     params=[4, 0.5111, 25]
     
     rawData, mode = loadimage("image/black.jpg")
+    # print(rawData)
     en_image_array, key = encryption(rawData,params)
     de_image_array, key = encryption(en_image_array,params)
     # print(en_image_array)
-    # print(de_image_array)
+    print(de_image_array)
     encode_image = Image.fromarray(en_image_array,mode=mode)
     encode_image.save("image/encoded.png","PNG")
     decode_image = Image.fromarray(de_image_array,mode=mode)
