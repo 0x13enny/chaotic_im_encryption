@@ -34,6 +34,7 @@ def LFSR(seed: int,len):
         key.append(bit8)
     return key
 def XOR(A,B):
+    # print(A,B)
     P = []
     for i in A:
         j = B[A.index(i)]
@@ -56,15 +57,15 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     key = XOR(key_chaos,key_lfsr)
     # print(key)
     image_array = image_array.tolist()
-    for h in image_array:
+    key = np.array(key)
+    shape = ( len(image_array), len(image_array[0]),len(image_array[0][0]) )
+
+    key = key.reshape(shape)
+    for row in range(0,len(image_array)-1):
         row_element=[]
-        for w in h:
-            pixel_element=[]
-            row_index = image_array.index(h)
-            pixel_index = h.index(w)
-            # (w+1)*(h+1)
-            index = (row_index+1)*(pixel_index+1)*len(image_array[0][0])
-            pixel_element = XOR(w,key[index-len(image_array[0][0]):index])
+        for pix in range(0,len(image_array[0])-1):
+
+            pixel_element = XOR(image_array[row][pix],key[row][pix])
             row_element.append(pixel_element)
         en_image.append(row_element)
     en_image = np.array(en_image).astype('uint8')
@@ -80,11 +81,12 @@ def test():
     rawData, mode = loadimage("image/black.jpg")
     en_image_array, key = encryption(rawData,params)
     de_image_array, key = encryption(en_image_array,params)
-
+    # print(en_image_array)
+    # print(de_image_array)
     encode_image = Image.fromarray(en_image_array,mode=mode)
-    encode_image.save("encoded.png","PNG")
+    encode_image.save("image/encoded.png","PNG")
     decode_image = Image.fromarray(de_image_array,mode=mode)
-    decode_image.save("decoded.png","PNG")
+    decode_image.save("image/decoded.png","PNG")
 
 
 
