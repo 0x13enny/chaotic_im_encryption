@@ -1,5 +1,5 @@
 from PIL import Image
-import sys, argparse
+import sys, argparse, time
 import numpy as np
 
 def chaotic_map(series_len,a,X0):
@@ -42,8 +42,8 @@ def XOR(A,B):
 
 def loadimage(file):
     Im = Image.open(file, "r")
-    pix = np.array(Im)
-    return pix
+    pix = np.array(Im).astype('uint8')
+    return pix, Im.mode
 
 def encryption(image_array, params: list):  # params = [A, X0, seed]
     en_image=[]
@@ -55,7 +55,6 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     # print(key_lfsr)
     key = XOR(key_chaos,key_lfsr)
     # print(key)
-    print(image_array)
     image_array = image_array.tolist()
     for h in image_array:
         row_element=[]
@@ -64,30 +63,30 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
             row_index = image_array.index(h)
             pixel_index = h.index(w)
             # (w+1)*(h+1)
-            index = (row_index+1)*(pixel_index+1)*3
-            pixel_element = XOR(w,key[index-3:index])
+            index = (row_index+1)*(pixel_index+1)*len(image_array[0][0])
+            pixel_element = XOR(w,key[index-len(image_array[0][0]):index])
             row_element.append(pixel_element)
         en_image.append(row_element)
-    en_image = np.array(en_image)
+    en_image = np.array(en_image).astype('uint8')
     return en_image, key
 
 def decription():
     pass
 
-if __name__=="__main__":
+def test():
+    
     params=[4, 0.5111, 25]
     
-    en_image_array, key = encryption(loadimage("image/test.jpg"),params)
+    rawData, mode = loadimage("image/black.jpg")
+    en_image_array, key = encryption(rawData,params)
     de_image_array, key = encryption(en_image_array,params)
 
+    encode_image = Image.fromarray(en_image_array,mode=mode)
+    encode_image.save("encoded.png","PNG")
+    decode_image = Image.fromarray(de_image_array,mode=mode)
+    decode_image.save("decoded.png","PNG")
 
-    # print("en",en_image_array)
-    # print("de",de_image_array)
 
-    # P = Image.new('RGB',(512,256))
-    newImg1 = Image.fromarray(en_image_array,"RGB")
-    newImg1.save("encoded.png","PNG")
-    # print(np.array(Image.open("encoded.png",'r')))
-    newImg2 = Image.fromarray(de_image_array,"RGB")
-    newImg2.save("decoded.png","PNG")
-    # print(np.array(Image.open("decoded.png",'r')))
+
+if __name__=="__main__":
+    test()
