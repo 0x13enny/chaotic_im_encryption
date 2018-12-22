@@ -1,13 +1,15 @@
 from PIL import Image
+from decimal import Decimal
 import sys, argparse, time
 import numpy as np
+from key_process import *
 
 def chaotic_map(series_len,a,X0):
 #   logistic map
 #   X[n+1]=A*X[n](1-X[n])
     X = [X0]
     for i in range(0,series_len-1):
-
+        # print(X[-1])
         tmp = logistic(X[-1],a)
         X[-1] = int(round(X[-1]*255,0))
         # if tmp in X:
@@ -18,8 +20,8 @@ def chaotic_map(series_len,a,X0):
     return X
 
 def logistic(Xn,a):
-    Xn1=a*Xn*(1-Xn)
-    return Xn1
+    Xnp=a*Xn*(1-Xn)
+    return Xnp
 
 def LFSR(seed: int,len):
     key = []
@@ -34,7 +36,6 @@ def LFSR(seed: int,len):
         key.append(bit8)
     return key
 def XOR(A,B):
-    # print(A,B)
     P = []
     for i in A:
         j = B[A.index(i)]
@@ -55,7 +56,7 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     key_lfsr = LFSR(params[2], length)
     # print(key_lfsr)
     key = XOR(key_chaos,key_lfsr)
-    # print(key)
+    print(key)
     image_array = image_array.tolist()
     key = np.array(key)
     shape = ( len(image_array), len(image_array[0]),len(image_array[0][0]) )
@@ -75,22 +76,27 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
 def decription():
     pass
 
-def test():
-    
-    params=[4, 0.5111, 25]
-    
-    rawData, mode = loadimage("image/black.jpg")
+def test(file,params):
+
+    rawData, mode = loadimage(file)
     # print(rawData)
     en_image_array, key = encryption(rawData,params)
     de_image_array, key = encryption(en_image_array,params)
     # print(en_image_array)
-    print(de_image_array)
+    # print(de_image_array)
     encode_image = Image.fromarray(en_image_array,mode=mode)
     encode_image.save("image/encoded.png","PNG")
-    decode_image = Image.fromarray(de_image_array,mode=mode)
-    decode_image.save("image/decoded.png","PNG")
-
 
 
 if __name__=="__main__":
-    test()
+
+    parser = argparse.ArgumentParser(description="script for image encryption")
+    parser.add_argument('-t', '--target', nargs='?', required=True)
+    parser.add_argument('-k', '--key', nargs='?',default="key.txt")
+    arguments = vars(parser.parse_args())
+
+    target_file = arguments['target']
+    key_file = arguments['key']
+    test(target_file,getKey(key_file))
+ 
+    
