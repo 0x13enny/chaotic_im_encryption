@@ -47,16 +47,14 @@ def loadimage(file):
     pix = np.array(Im).astype('uint8')
     return pix, Im.mode
 
-def encryption(image_array, params: list):  # params = [A, X0, seed]
+def diffusion(image_array, params: list):  # params = [A, X0, seed]
     en_image=[]
     length = len(image_array)*len(image_array[0])*len(image_array[0][0])
-    # efficiency warning
+    
     key_chaos = chaotic_map(length,params[0],params[1])
-    # print(key_chaos)
     key_lfsr = LFSR(params[2], length)
-    # print(key_lfsr)
     key = XOR(key_chaos,key_lfsr)
-    print(key)
+    # print(key)
     image_array = image_array.tolist()
     key = np.array(key)
     shape = ( len(image_array), len(image_array[0]),len(image_array[0][0]) )
@@ -73,15 +71,12 @@ def encryption(image_array, params: list):  # params = [A, X0, seed]
     en_image = np.array(en_image).astype('uint8')
     return en_image, key
 
-def decription():
-    pass
-
 def test(file,params):
 
     rawData, mode = loadimage(file)
     # print(rawData)
-    en_image_array, key = encryption(rawData,params)
-    de_image_array, key = encryption(en_image_array,params)
+    en_image_array, key = diffusion(rawData,params)
+    de_image_array, key = diffusion(en_image_array,params)
     # print(en_image_array)
     # print(de_image_array)
     encode_image = Image.fromarray(en_image_array,mode=mode)
@@ -93,10 +88,15 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description="script for image encryption")
     parser.add_argument('-t', '--target', nargs='?', required=True)
     parser.add_argument('-k', '--key', nargs='?',default="key.txt")
+    parser.add_argument('-g', '--generate_key',action='store_true')
     arguments = vars(parser.parse_args())
+    if parser.parse_args().generate_key ==True:
+        print(generateKey())
 
-    target_file = arguments['target']
-    key_file = arguments['key']
-    test(target_file,getKey(key_file))
+    
+    # target_file = arguments['target']
+    # key_file = arguments['key']
+    # test(target_file,getKey(key_file))
+    print("encryption success")
  
     

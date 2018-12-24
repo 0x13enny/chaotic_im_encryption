@@ -1,6 +1,8 @@
 import numpy as np
-import math
-from decimal import Decimal #55 digits
+# import math
+from decimal import * 
+import random
+
 
 def getKey(file):
     keys = open(file,"r").readlines()
@@ -13,11 +15,20 @@ def getKey(file):
     return [int(data[0]),X0,int(data[3])]
 
     
+def generateKey():
+    A=3.5+random.getrandbits(10)/1023*0.5
+    X0u = random.getrandbits(1024)
+    X0d = random.getrandbits(1024)
+    seed = random.getrandbits(8)
+    while Decimal(X0u/X0d)>=1 or Decimal(X0u/X0d)==0:
+        X0u = random.getrandbits(1024)
+        X0d = random.getrandbits(1024)
+    
+    return [A,X0u,X0d,seed]
 if __name__=="__main__":
     # print(math.pow(2,1023)-89*math.pow(10,306)) #maximum 
     # print(converKey())
-
-
+    # print(generateKey())
     # X0 = 0.15
     # X0 = math.pow(2,-50) + 0.15  #is able to detect two different in 50 map
     
