@@ -3,10 +3,9 @@ from decimal import Decimal
 import sys, argparse, time
 import numpy as np
 from key_process import *
+from mapping import *
 
 def chaotic_map(series_len,a,X0):
-#   logistic map
-#   X[n+1]=A*X[n](1-X[n])
     X = [X0]
     for i in range(0,series_len-1):
         # print(X[-1])
@@ -18,10 +17,6 @@ def chaotic_map(series_len,a,X0):
         X.append(tmp)
     X[-1] = int(round(X[-1]*255,0))    
     return X
-
-def logistic(Xn,a):
-    Xnp=a*Xn*(1-Xn)
-    return Xnp
 
 def LFSR(seed: int,len):
     key = []
@@ -70,6 +65,9 @@ def diffusion(image_array, params: list):  # params = [A, X0, seed]
         en_image.append(row_element)
     en_image = np.array(en_image).astype('uint8')
     return en_image, key
+
+def pixel_chaotic_shuffle():
+    pass
 
 def test(file,params):
 
