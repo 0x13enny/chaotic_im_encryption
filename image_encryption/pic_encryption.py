@@ -40,6 +40,7 @@ def XOR(A,B):
 def loadimage(file):
     Im = Image.open(file, "r")
     pix = np.array(Im).astype('uint8')
+    print("target image mode : %s" %(Im.mode))
     return pix, Im.mode
 
 def diffusion(image_array, params: list):  # params = [A, X0, seed]
@@ -74,7 +75,7 @@ def test(file,params):
     rawData, mode = loadimage(file)
     # print(rawData)
     en_image_array, key = diffusion(rawData,params)
-    de_image_array, key = diffusion(en_image_array,params)
+    # de_image_array, key = diffusion(en_image_array,params)
     # print(en_image_array)
     # print(de_image_array)
     encode_image = Image.fromarray(en_image_array,mode=mode)
