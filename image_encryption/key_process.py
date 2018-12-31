@@ -12,7 +12,8 @@ def getKey(file):
         else:
             data = key.split(',')
     X0 = Decimal(int(data[1])/int(data[2]))
-    return [int(data[0]),X0,int(data[3])]
+    A = Decimal(data[0])
+    return [A,X0,int(data[3])]
 
 def generateKey():
     A=round(3.5+random.getrandbits(10)/1023*0.5,6)

@@ -1,3 +1,4 @@
+import sys
 import numpy as np 
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -36,4 +37,4 @@ def pixel_analysis(imageFile):
         plt.tight_layout()
         plt.show()
 
-pixel_analysis('image/Test_card.png')
+pixel_analysis(sys.argv[1])
