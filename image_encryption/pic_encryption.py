@@ -2,21 +2,9 @@ from PIL import Image
 from decimal import Decimal
 import sys, argparse, time
 import numpy as np
+from numpy import newaxis
 from key_process import *
 from mapping import *
-
-def chaotic_map(series_len,a,X0):
-    X = [X0]
-    for i in range(0,series_len-1):
-        # print(X[-1])
-        tmp = logistic(X[-1],a)
-        X[-1] = int(round(X[-1]*255,0))
-        # if tmp in X:
-        #     print("periodic detection : %s" %(len(X)))
-        #     sys.exit(1)
-        X.append(tmp)
-    X[-1] = int(round(X[-1]*255,0))    
-    return X
 
 def LFSR(seed: int,len):
     key = []
@@ -45,42 +33,78 @@ def loadimage(file):
 
 def diffusion(image_array, params: list):  # params = [A, X0, seed]
     en_image=[]
+    # print(params)
     length = len(image_array)*len(image_array[0])*len(image_array[0][0])
-    
-    key_chaos = chaotic_map(length,params[0],params[1])
+    transient = 1000
+    key_chaos = logistic_map(length+transient,params[0],params[1])[transient:]
     key_lfsr = LFSR(params[2], length)
     key = XOR(key_chaos,key_lfsr)
     # print(key)
-    image_array = image_array.tolist()
+    image_list = image_array.tolist()
     key = np.array(key)
-    shape = ( len(image_array), len(image_array[0]),len(image_array[0][0]) )
+    shape = ( len(image_list), len(image_list[0]),len(image_list[0][0]) )
     key = key.reshape(shape)
     # print(key)
-    # print(image_array)
-    for row in range(0,len(image_array)):
+    for row in range(0,len(image_list)):
         row_element=[]
-        for pix in range(0,len(image_array[0])):
-
-            pixel_element = XOR(image_array[row][pix],key[row][pix])
+        for pix in range(0,len(image_list[0])):
+            pixel_element = XOR(image_list[row][pix],key[row][pix])
             row_element.append(pixel_element)
         en_image.append(row_element)
     en_image = np.array(en_image).astype('uint8')
     return en_image, key
 
-def pixel_chaotic_shuffle():
-    pass
+def pixel_chaotic_shuffle(image_array):
+    image_list = image_array.tolist()
+    #rearrange row elements
+    #then rearrange whole row
+    IC = [1,1]
+    transient = 1000
+    if len(image_list) > len(image_list[0]):
+        max_len = len(image_list)
+    else :
+        max_len = len(image_list[0])  #choose bigger!!!!!!
+    shift_key = np.array(Henon(max_len+transient,IC,1.4,0.3))[transient:]
+    order_shift_key_X = shift_key[0:len(image_list[0]),0].argsort()
+    rank_shift_key_X = order_shift_key_X.argsort()
+    order_shift_key_Y = shift_key[0:len(image_list),1].argsort()
+    rank_shift_key_Y = order_shift_key_Y.argsort()  
+    # sort results are 
+    #   small --> big  ( 0 --> max )
+    
+    # confusion_key = np.column_stack((rank_shift_key_X,rank_shift_key_Y))
+    # shape = ( len(image_list), 2) #2 is from henon map dimension
+    # confusion_key = confusion_key.reshape(shape)
+    # print(confusion_key)
+    # [row ind, column ind]
+    
+    # print(image_array)
+    tmp = []
+    en_image = np.zeros((len(image_array),len(image_array[0]),len(image_array[0][0]))).astype('uint8')
+    for i in range(0,len(image_list)):
+        tmp.append(image_array[rank_shift_key_Y[i]])
+    tmp = np.array(tmp)
+    
+    for i in range(0,len(image_list)):
+        for j in range(0,len(image_list[0])):
+            
+            a=rank_shift_key_X[j]
+            en_image[i,j] = tmp[i][a]
+            
+            pass
+    return en_image
+def encryption(target_file,params):
 
-def test(file,params):
-
-    rawData, mode = loadimage(file)
-    # print(rawData)
-    en_image_array, key = diffusion(rawData,params)
+    rawData, mode = loadimage(target_file)
     # de_image_array, key = diffusion(en_image_array,params)
-    # print(en_image_array)
-    # print(de_image_array)
+    shuffled_array = pixel_chaotic_shuffle(rawData)
+    en_image_array, key = diffusion(shuffled_array,params)
     encode_image = Image.fromarray(en_image_array,mode=mode)
-    encode_image.save("image/encoded.png","PNG")
+    target_file = str(target_file.split('.')[0].split('/')[1])
+    encode_image.save("image/%s_encoded.png"%(target_file),"PNG")
 
+def decode():
+    pass
 
 if __name__=="__main__":
 
@@ -93,9 +117,9 @@ if __name__=="__main__":
         print(generateKey())
 
     
-    # target_file = arguments['target']
-    # key_file = arguments['key']
-    # test(target_file,getKey(key_file))
+    target_file = arguments['target']
+    key_file = arguments['key']
+    encryption(target_file,getKey(key_file))
     print("encryption success")
  
     
