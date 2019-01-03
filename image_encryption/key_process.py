@@ -20,11 +20,14 @@ def generateKey():
     X0u = random.getrandbits(1024)
     X0d = random.getrandbits(1024)
     seed = random.getrandbits(8)
+    X0 = random.getrandbits(1024)/random.getrandbits(1024)
+    Y0 = random.getrandbits(1024)/random.getrandbits(1024)
     while Decimal(X0u/X0d)>=1 or Decimal(X0u/X0d)==0:
         X0u = random.getrandbits(1024)
         X0d = random.getrandbits(1024)
-    X0 = random.getrandbits(1024)/random.getrandbits(1024)
-    Y0 = random.getrandbits(1024)/random.getrandbits(1024)
+    while X0 > 1 or Y0 > 1 or ((X0-0.5)*(Y0-0.5))<0:
+        X0 = random.getrandbits(1024)/random.getrandbits(1024)
+        Y0 = random.getrandbits(1024)/random.getrandbits(1024)
     key_file = open("key.txt","w")
     # key_file.write("{0:.f}".format(A))
     key_file.write("%f,%d,%d,%d,%f,%f"%(A,X0u,X0d,seed,X0,Y0))

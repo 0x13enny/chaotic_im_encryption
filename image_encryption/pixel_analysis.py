@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 #for RGB type
-def pixel_analysis(imageFile):
+def pixel_analysis(imageFile,name):
     Im = Image.open(imageFile,"r")
 
     print("target image mode : %s" %(Im.mode))
@@ -35,6 +35,9 @@ def pixel_analysis(imageFile):
         plt.hist(B,bins=256,color='blue')
         # print(R)
         plt.tight_layout()
-        plt.show()
+        plt.savefig("%s_analysis.png"%(name))
 
-pixel_analysis(sys.argv[1])
+if __name__=="__main__":
+        tname = sys.argv[1]
+        dname = sys.argv[2]
+        pixel_analysis(tname,dname)

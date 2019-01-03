@@ -38,6 +38,7 @@ def Henon(series_len, IC: list,a,b):
     # Henon map
     # X[n+1]=1-a*(X[n]^2)+Y[n]
     # Y[n+1]=b*X[n]
+    # print(IC)
     XY = [IC]
     for i in range(0,series_len-1):
         # print(XY)
