@@ -111,6 +111,7 @@ def encrypt(target_file,key:list):
     encode_image = Image.fromarray(en_image_array,mode=mode)
     target_file = target_file.split('.')[0].split('/')[1]
     encode_image.save("image/%s_encoded.png"%(target_file),"PNG")
+    print("successfully encrypted")
 
 def decrypt(target_file, key:list):
     rawData, mode = loadimage(target_file)
@@ -119,6 +120,8 @@ def decrypt(target_file, key:list):
     decode_image = Image.fromarray(de_image_array,mode=mode)
     target_file = target_file.split('.')[0].split('/')[1]
     decode_image.save("image/%s_decoded.png"%(target_file),"PNG")
+    print("successfully decrypted")
+
 
 if __name__=="__main__":
 
@@ -129,7 +132,7 @@ if __name__=="__main__":
     parser.add_argument('-g', '--generate_key',action='store_true')
     arguments = vars(parser.parse_args())
     if parser.parse_args().generate_key ==True:
-        print(generateKey())
+        generateKey()
     
     key_file = arguments['key']
 
@@ -140,6 +143,5 @@ if __name__=="__main__":
     if arguments['decrypt'] != None :
         de_target_file = arguments['decrypt']
         decrypt(de_target_file, getKey(key_file))
-    print("request done")
  
     

@@ -28,4 +28,5 @@ def generateKey():
     key_file = open("key.txt","w")
     # key_file.write("{0:.f}".format(A))
     key_file.write("%f,%d,%d,%d,%f,%f"%(A,X0u,X0d,seed,X0,Y0))
+    print("key generated")
     return [A, X0u, X0d, seed, X0, Y0]
