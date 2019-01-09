@@ -107,11 +107,11 @@ def encrypt(target_file,key:list):
     # de_image_array, key = diffusion(en_image_array,key)
     shuffled_array = pixel_chaotic_shuffle(rawData, key[3:5])
     en_image_array = diffusion(shuffled_array,key)
-    # en_image_array = shuffled_array
     encode_image = Image.fromarray(en_image_array,mode=mode)
     target_file = target_file.split('.')[0].split('/')[1]
     encode_image.save("image/%s_encoded.png"%(target_file),"PNG")
     print("successfully encrypted")
+    return "image/%s_encoded.png"%(target_file)
 
 def decrypt(target_file, key:list):
     rawData, mode = loadimage(target_file)
@@ -121,7 +121,7 @@ def decrypt(target_file, key:list):
     target_file = target_file.split('.')[0].split('/')[1]
     decode_image.save("image/%s_decoded.png"%(target_file),"PNG")
     print("successfully decrypted")
-
+    return "image/%s_decoded.png"%(target_file)
 
 if __name__=="__main__":
 
@@ -143,5 +143,3 @@ if __name__=="__main__":
     if arguments['decrypt'] != None :
         de_target_file = arguments['decrypt']
         decrypt(de_target_file, getKey(key_file))
- 
-    

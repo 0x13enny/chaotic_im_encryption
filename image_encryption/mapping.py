@@ -60,5 +60,5 @@ def Chirikov(series_len,IC: list,k):
 
 if __name__=="__main__":
     IC = [0.8536,0.1424]
-    print(Henon(1000,IC,1.4,0.3))
+    print(Henon(10,IC,1.4,0.3))
     # print(IC)
