@@ -108,6 +108,6 @@ if __name__ == "__main__":
     image_array, mode = pic_encryption.loadimage(target)
     en_image_array, mode = pic_encryption.loadimage(en_target)
     # return_map(image_array,en_image_array)
-    # data_row,data_column  = correlation(image_array)
-    # data_row,data_column = correlation(en_image_array)
+    data_row,data_column  = correlation(image_array)
+    data_row,data_column = correlation(en_image_array)
     print(NPCR_UACI(image_array,en_image_array))
