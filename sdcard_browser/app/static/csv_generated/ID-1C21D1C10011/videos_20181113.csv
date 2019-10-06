@@ -1,9 +1,0 @@
-timeStamp,time,ave_kbps,ave_fps,resolute,frame_mode,sd_rec_mode
-2018-11-13:20::00,60.63,1309.77,29.93,"[0, 30]",higher_frame_rate,continuous recording
-2018-11-13:20::30,60.66,1309.41,29.95,"[0, 29]",higher_frame_rate,continuous recording
-2018-11-13:21::00,60.54,1310.0,29.88,"[0, 30]",higher_frame_rate,continuous recording
-2018-11-13:21::30,60.67,1309.23,29.92,"[0, 30]",higher_frame_rate,continuous recording
-2018-11-13:22::00,60.62,1309.76,29.93,"[0, 29]",higher_frame_rate,continuous recording
-2018-11-13:22::30,60.7,1316.67,29.91,"[0, 30]",higher_frame_rate,continuous recording
-2018-11-13:23::00,60.5,1311.27,29.94,"[0, 30]",higher_frame_rate,continuous recording
-2018-11-13:23::30,58.73,1306.0,29.91,"[0, 30]",higher_frame_rate,continuous recording
