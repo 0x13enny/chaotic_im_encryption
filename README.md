@@ -1,4 +1,4 @@
-## image_encryption project
+## Chaotic Image Encryption
 
 ### description
 
